@@ -20,4 +20,19 @@ class VehicleController extends Controller
             'vehicles' => Vehicle::query()->with('brand')->filter($request->validated())->paginate(25)
         ]);
     }
+
+    /**
+     * Display the specified Vehicle.
+     *
+     * @param Vehicle $vehicle
+     * @return View
+     */
+    public function show(Vehicle $vehicle): View
+    {
+        $vehicle->load('parts');
+
+        return view('vehicles.show', [
+            'vehicle' => $vehicle
+        ]);
+    }
 }

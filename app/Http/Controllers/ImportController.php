@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ImportStatus;
 use App\Enums\ImportType;
+use App\Events\ImportCreated;
+use App\Http\Requests\ImportStoreRequest;
+use App\Models\Import\Import as ImportModel;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ImportController extends Controller
 {
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return View
+     */
     public function create(): View
     {
         return view('imports.create', [
@@ -15,7 +25,13 @@ class ImportController extends Controller
     }
 
 
-    public function store(ImportStoreRequest $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param ImportStoreRequest $request
+     * @return RedirectResponse
+     */
+    public function store(ImportStoreRequest $request): RedirectResponse
     {
         $fileName = $request->file('file')->store('import-files');
 
@@ -29,7 +45,6 @@ class ImportController extends Controller
 
         event(new ImportCreated($importModel));
 
-
-        dd('okkk');
+        return redirect()->route('imports.create');
     }
 }
