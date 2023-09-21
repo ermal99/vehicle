@@ -20,6 +20,7 @@ class ImportController extends Controller
     public function create(): View
     {
         return view('imports.create', [
+            'userImports' => auth()->user()->imports,
             'importTypes' => ImportType::toArray()
         ]);
     }

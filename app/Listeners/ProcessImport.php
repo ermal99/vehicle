@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Factories\Import\ImportFactory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -21,6 +22,7 @@ class ProcessImport implements ShouldQueue
     public function handle(ImportCreated $event): void
     {
         $import = $event->import;
-        dd($import);
+
+        ImportFactory::factory($import)->import()->notifyImportResult();
     }
 }
